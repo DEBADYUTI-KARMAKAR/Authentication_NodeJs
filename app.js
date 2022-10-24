@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 
 
 const User = require('./model/user');
+const auth = require('./middleware/auth');
+
 const app=express();
 app.use(express.json());
 
@@ -118,7 +120,7 @@ next()
 
 */
 
-app.get("/dahsboard",(req,res)=>{
+app.get("/dahsboard",auth,(req,res)=>{
     res.send("Welcome to secreat information");
 })
 
