@@ -67,6 +67,15 @@ app.post("/register", async (req, res) => {
 
 });
 
+/*
+
+get all information
+check mandatory fields
+get user from db
+compare and verify password
+give token or other information to the user
+*/
+
 app.post("/login", async (req, res) => {
     try{
         const {email,password}=req.body;
@@ -100,6 +109,18 @@ app.post("/login", async (req, res) => {
 
 });
 
+/*
+Protecting routes
+check for token presence
+verify the token
+extract information from payload
+next()
+
+*/
+
+app.get("/dahsboard",(req,res)=>{
+    res.send("Welcome to secreat information");
+})
 
 
 module.exports=app;
