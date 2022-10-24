@@ -3,13 +3,14 @@ require("./config/database").connect();
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const cookieParser = require('cookie-parser');
 
 const User = require('./model/user');
 const auth = require('./middleware/auth');
 
 const app=express();
 app.use(express.json());
+app.use(cookieParser());
 
 app.get('/',(req,res)=>{
     res.send('Hello World');
@@ -102,7 +103,20 @@ app.post("/login", async (req, res) => {
             //handle password situation
             user.password = undefined;
             // send token or send just success message and redirect.
-            res.status(200).json(user); 
+           // res.status(200).json(user); 
+
+           //if you want to use cookie
+           const options = {
+            expires: new Date(
+                Date.now() + process.env.COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+            ),
+            httpOnly: true,
+           };
+           res.status(200).cookie('token', token, options).json({
+            status: true,
+            token,
+            user,
+           });
         }
         res.status(400).send("Invalid Credentials");
     }catch(error){
